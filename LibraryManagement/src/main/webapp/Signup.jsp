@@ -50,7 +50,7 @@
             </form>
 
             <div class="text-center mt-3">
-                ¿Ya tienes cuenta? <a href="login.jsp">Inicia sesión</a>
+                ¿Ya tienes cuenta? <a href="Login.jsp">Inicia sesión</a>
             </div>
         </div>
 

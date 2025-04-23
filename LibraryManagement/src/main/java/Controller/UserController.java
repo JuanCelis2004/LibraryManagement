@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,6 +37,9 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
+        
 
         String action = request.getParameter("action");
         String email = request.getParameter("email");
@@ -137,6 +141,34 @@ public class UserController extends HttpServlet {
                 }
                 break;
                 
+                case "Adminedit":
+                try {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    String nameEdit = request.getParameter("name");
+                    String lastnameEdit = request.getParameter("lastname");
+                    String emailEdit = request.getParameter("email");
+                    String passwordEdit = request.getParameter("password");
+
+                    user = userJpa.findUser(id);
+
+
+                    user.setName(nameEdit);
+                    user.setLastname(lastnameEdit);
+                    user.setEmail(emailEdit);
+
+                    if (passwordEdit != null && !passwordEdit.isEmpty()) {
+                        user.setPassword(passwordEdit);
+                    }
+                    userJpa.edit(user);
+                    
+                    response.sendRedirect("AdminPanel.jsp?section=listarUsuarios");
+               
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.sendRedirect("AdminPanel.jsp?section=listarUsuarios");
+                }
+                break;
+                
             case "create":
                 String nameNew = request.getParameter("name");
                 String lastnameNew = request.getParameter("lastname");
@@ -154,13 +186,30 @@ public class UserController extends HttpServlet {
                 try {
                     userJpa.create(user);
 
-                    response.sendRedirect("Login.jsp");
+                    response.sendRedirect("AdminPanel.jsp?section=listarUsuarios");
 
                 } catch (Exception e) {
                     // Si hay error, enviar a registro con mensaje
                     request.setAttribute("error", "Error al registrar usuario: " + e.getMessage());
                     request.getRequestDispatcher("Singup.jsp").forward(request, response);
                 }
+                break;
+                
+                
+            case "delete":
+                
+                int id = Integer.parseInt(request.getParameter("id"));
+                
+                try {
+                    userJpa.destroy(id);
+                    
+                    response.sendRedirect("AdminPanel.jsp?section=listarUsuarios");
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.sendRedirect("AdminPanel.jsp?section=listarUsuarios");
+                }
+                
                 break;
             default:
                 throw new AssertionError();

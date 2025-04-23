@@ -22,7 +22,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="inicio.jsp">Biblioteca Virtual</a>
+            <a class="navbar-brand" href="index.jsp">Biblioteca Virtual</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -51,7 +51,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">El Principito</h5>
                                 <p class="card-text">Un clásico de Antoine de Saint-Exupéry.</p>
-                                <a href="login.jsp" class="btn btn-primary">Ver más</a>
+                                <a href="Login.jsp" class="btn btn-primary">Ver más</a>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">Cien Años de Soledad</h5>
                                 <p class="card-text">Obra maestra de Gabriel García Márquez.</p>
-                                <a href="login.jsp" class="btn btn-primary">Ver más</a>
+                                <a href="Login.jsp" class="btn btn-primary">Ver más</a>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">1984</h5>
                                 <p class="card-text">La distopía de George Orwell.</p>
-                                <a href="login.jsp" class="btn btn-primary">Ver más</a>
+                                <a href="Login.jsp" class="btn btn-primary">Ver más</a>
                             </div>
                         </div>
                     </div>

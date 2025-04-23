@@ -4,12 +4,21 @@
     Author     : juand
 --%>
 
+<%@page import="Persistence.LoanJpaController"%>
+<%@page import="Persistence.UserJpaController"%>
+<%@page import="Model.Loan"%>
+<%@page import="Persistence.BookJpaController"%>
 <%@page import="java.util.List"%>
 <%@page import="Model.Book"%>
 <%@page import="Model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+
+    BookJpaController bookJPA = new BookJpaController();
+    UserJpaController userJPA = new UserJpaController();
+    LoanJpaController loanJPA = new LoanJpaController();
+
     User user = (User) session.getAttribute("usuario");
 
     if (user == null) {
@@ -17,7 +26,6 @@
         return;
     }
 
-    List<Book> book = (List<Book>) request.getAttribute("libros"); // Traído desde el Servlet
 %>
 <html>
     <head>
@@ -68,9 +76,10 @@
 
             <!-- Cards -->
             <div class="row">
-                <% if (book != null) {
-                        for (int i = 0; i < book.size(); i++) {
-                            Book b = book.get(i);
+                <%
+                    List<Book> books = bookJPA.findBookEntities();
+                    if (books != null && !books.isEmpty()) {
+                        for (Book b : books) {
                 %>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
@@ -90,6 +99,34 @@
                             <button type="button" class="btn btn-primary mt-auto" data-bs-toggle="modal" data-bs-target="#modalDetalle<%= b.getId()%>">
                                 Ver Detalle
                             </button>
+                            <% if (b.getAvailability()) {
+                            %>
+
+                            <form action="LoanController" method="POST" class="mt-2">
+                                <input type="hidden" name="id_user" value="<%= user.getId()%>">
+                                <input type="hidden" name="id_book" value="<%= b.getId()%>">
+                                <button type="submit" name="action" value="userLoan" class="btn btn-sm btn-warning">Pedir préstamo</button>
+                            </form>
+
+                            <% }%>
+                            <%
+                                // Buscar préstamo activo para este usuario y este libro
+                                List<Loan> userLoans = loanJPA.findLoanEntities();
+                                for (Loan l : userLoans) {
+                                    if (l.getUser().getId() == user.getId()
+                                            && l.getBook().getId() == b.getId()
+                                            && l.getStatus().equals("activo")) {
+                            %>
+                            <form action="LoanController" method="post" class="mt-2">
+                                <input type="hidden" name="action" value="returnLoan">
+                                <input type="hidden" name="id_loan" value="<%= l.getId()%>">
+                                <button type="submit" class="btn btn-danger btn-sm">Devolver libro</button>
+                            </form>
+                            <%
+                                        break;
+                                    }
+                                }
+                            %>
                         </div>
                     </div>
                 </div>
@@ -124,7 +161,7 @@
                 </div>
 
                 <%
-                    } // fin del for
+                    }
                 } else { %>
                 <div class="col-12">
                     <div class="alert alert-warning text-center">

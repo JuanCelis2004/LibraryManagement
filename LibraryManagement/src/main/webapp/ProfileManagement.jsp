@@ -55,6 +55,9 @@
                     <div class="d-grid">
                         <button type="submit" name="action" value="edit" class="btn btn-primary">Guardar Cambios</button>
                     </div>
+                    <div class="d-grid">
+                        <a href="BookCatalog.jsp" class="btn btn-secondary">Regresar</a>
+                    </div>
                 </form>
 
             </div>
